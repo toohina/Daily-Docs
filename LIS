@@ -1,0 +1,36 @@
+Longest Increasing Subsequence
+
+First Try:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n=nums.length;
+        int ans=1;
+        for(int i=0;i<n;i++){
+            int maxi=1;
+            int prev=i;
+            for(int j=i+1;j<n;j++){
+                if(nums[j]>nums[prev]){
+                    maxi++;
+                    prev=j;
+                }
+            }
+            ans=Math.max(maxi,ans);
+        }
+        return ans;
+    }
+}
+
+Issue:
+numbers are not in sorted order, there is a chance that you are not taking the number in consideration that can give you the longest subsequence.
+
+
+
+Edge case:
+Input
+nums =
+[0,1,0,3,2,3]
+Output
+3
+Expected
+4
+
