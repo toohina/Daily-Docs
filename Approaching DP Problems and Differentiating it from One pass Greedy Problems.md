@@ -40,6 +40,17 @@ Most problems fall into one of these patterns:
 
 👉 First classify the problem.
 
+### Example question:
+Subset Sum (0/1 Knapsack Decision Problem)
+#### 📘 Problem Statement
+##### You are given:
+An integer array arr
+An integer target
+##### Question:
+Is there a subset of arr whose sum is exactly equal to target?
+##### Rules:
+* Each element can be used at most once
+* You can either take or not take an element
 ---
 
 ## 3️⃣ Step 3: Define the State 🧩 (MOST IMPORTANT)
