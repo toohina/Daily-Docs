@@ -542,6 +542,113 @@ Backward loop = use element once. Forward loop = reuse element multiple times.
 2D DP → clear logic.  
 1D DP → same logic, reused space.  
 Backward loop → preserves correctness.
+
+
+#### Forward-loop example that gives the WRONG answer (0/1 Subset Sum)
+
+🔴 Problem we are solving  
+Subset Sum (0/1) — each element can be used at most once.
+
+Input:
+```java
+int[] arr = {3};
+int target = 6;
+```
+
+Correct answer: `false` — with a single `3` you cannot make `6`.
+
+---
+
+##### ✅ Correct (Backward loop) — WORKS
+
+Code:
+```java
+boolean[] dp = new boolean[7];
+dp[0] = true;
+
+int num = 3;
+
+for (int s = 6; s >= num; s--) {
+    dp[s] = dp[s] || dp[s - num];
+}
+```
+
+Step-by-step:
+
+Initial:
+```
+dp = [T, F, F, F, F, F, F]
+```
+
+s = 6 → dp[6] = dp[6] || dp[3] = false || false = false  
+s = 5 → dp[5] = dp[5] || dp[2] = false || false = false  
+s = 4 → dp[4] = dp[4] || dp[1] = false || false = false  
+s = 3 → dp[3] = dp[3] || dp[0] = false || true = true
+
+Final:
+```
+dp = [T, F, F, T, F, F, F]
+```
+
+Result: `dp[6] = false` → correct.
+
+---
+
+##### ❌ Wrong (Forward loop) — BUG appears
+
+Code:
+```java
+boolean[] dp = new boolean[7];
+dp[0] = true;
+
+int num = 3;
+
+for (int s = num; s <= 6; s++) {
+    dp[s] = dp[s] || dp[s - num];
+}
+```
+
+Step-by-step (watch the update order):
+
+Initial:
+```
+dp = [T, F, F, F, F, F, F]
+```
+
+s = 3:
+```
+dp[3] = dp[3] || dp[0] = false || true = true
+// dp becomes:
+[T, F, F, T, F, F, F]
+```
+
+s = 6:
+```
+dp[6] = dp[6] || dp[3] = false || true = true
+// dp becomes:
+[T, F, F, T, F, F, T]
+```
+
+Result: `dp[6] = true` → WRONG. The algorithm just reused the same `3` twice (3 + 3), violating the 0/1 constraint.
+
+---
+
+##### 🧠 Why this happens (core reason)
+- Forward loop reads `dp[s - num]` that may have been updated earlier *in the same iteration* for the current `num`. That lets the element "see itself" again → unlimited reuse.
+- Backward loop reads `dp[s - num]` from indices that haven't been updated yet in this iteration, so it uses only previous-state values → each element contributes at most once.
+
+---
+
+##### 🔑 Golden Rule (MEMORIZE)
+- If elements can be used only once (0/1) → iterate s from target down to num (backward).
+- If elements can be reused (unbounded) → iterate s from num up to target (forward).
+
+---
+
+##### One-line intuition
+Forward loop lets the same element "see itself" again; backward loop prevents that, preserving 0/1 behavior.
+
+
 ---
 
 ## 9️⃣ DP Thinking Template (Memorize This)
