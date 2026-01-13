@@ -136,9 +136,11 @@ for (int i = 1; i <= n; i++) {
         }
     }
 }
-# Subset Sum (0/1) — Bottom-Up DP
 
-## 🧠 Goal of the Problem
+```
+### Subset Sum (0/1) — Bottom-Up DP
+
+#### 🧠 Goal of the Problem
 Given:
 ```java
 int[] arr = {2, 3, 7};
@@ -149,7 +151,7 @@ Each element can be used at most once (take / don’t take).
 
 ---
 
-## 1️⃣ What does dp[i][s] mean?
+#### 1️⃣ What does dp[i][s] mean?
 This is the MOST IMPORTANT PART.
 
 dp[i][s] = true if we can form sum = s using the first i elements
@@ -165,7 +167,7 @@ Example:
 
 ---
 
-## 2️⃣ DP Table Size
+#### 2️⃣ DP Table Size
 ```java
 boolean[][] dp = new boolean[n + 1][target + 1];
 ```
@@ -174,7 +176,7 @@ Columns run from 0..target (sums).
 
 ---
 
-## 3️⃣ Base Case Initialization
+#### 3️⃣ Base Case Initialization
 ```java
 dp[0][0] = true;
 ```
@@ -186,7 +188,7 @@ Also, for every i: dp[i][0] = true (we can always form sum 0 by choosing nothing
 
 ---
 
-## 4️⃣ Filling the Table (Core Logic)
+#### 4️⃣ Filling the Table (Core Logic)
 We iterate over items (i) and all possible sums (s):
 ```java
 for (int i = 1; i <= n; i++) {
@@ -199,7 +201,7 @@ Meaning: For each prefix of the array and for each target sum, decide if sum s i
 
 ---
 
-## 5️⃣ DON’T TAKE Case
+#### 5️⃣ DON’T TAKE Case
 ```java
 dp[i][s] = dp[i - 1][s];
 ```
@@ -209,7 +211,7 @@ Example: dp[2][5] = dp[1][5]
 
 ---
 
-## 6️⃣ TAKE Case
+#### 6️⃣ TAKE Case
 ```java
 if (s >= arr[i - 1]) {
     dp[i][s] |= dp[i - 1][s - arr[i - 1]];
@@ -225,7 +227,7 @@ Example: arr[i - 1] = 3, s = 5 → remaining = 2 → dp[2][5] |= dp[1][2]
 
 ---
 
-## 7️⃣ Why OR (|=)?
+#### 7️⃣ Why OR (|=)?
 ```java
 dp[i][s] = dontTake OR take
 ```
@@ -233,7 +235,7 @@ If either not taking or taking yields true, dp[i][s] is true.
 
 ---
 
-## 8️⃣ Full Code (With Meaning)
+#### 8️⃣ Full Code (With Meaning)
 ```java
 boolean[][] dp = new boolean[n + 1][target + 1];
 
@@ -261,7 +263,7 @@ for (int i = 1; i <= n; i++) {
 
 ---
 
-## 9️⃣ Visual Table Example
+#### 9️⃣ Visual Table Example
 For arr = {2, 3}, target = 5:
 
 i \ s | 0 | 1 | 2 | 3 | 4 | 5
@@ -274,23 +276,21 @@ i \ s | 0 | 1 | 2 | 3 | 4 | 5
 
 ---
 
-## 🔑 Mental Model (Memorize This)
+#### 🔑 Mental Model (Memorize This)
 “Each DP row answers: what sums can I form up to this element?”
 
 For each element, choose take or don't take and build answers from smaller subproblems.
 
 ---
 
-## Complexity
+#### Complexity
 - Time: O(n * target) — we evaluate every (i, s).
 - Space: O(n * target). Can be optimized to O(target) using a single boolean[] and iterating s from target down to arr[i-1].
 
 ---
 
-## 🔥 Interview Gold Line
+#### 🔥 Interview Gold Line
 “For each element, I decide take or don’t take, and build answers from smaller subproblems — dp[i][s] means whether sum s is achievable using the first i elements.”
-```
-
 ---
 
 
@@ -306,10 +306,10 @@ for (int num : arr) {
         dp[s] = dp[s] || dp[s - num];
     }
 }
+```
+### Subset Sum (0/1) — 1D Optimization (Space Optimized)
 
-# Subset Sum (0/1) — 1D Optimization (Space Optimized)
-
-## 🧠 What we are optimizing
+#### 🧠 What we are optimizing
 
 Earlier we had:
 ```java
@@ -319,7 +319,7 @@ boolean[][] dp = new boolean[n + 1][target + 1];
 But notice something important: to compute dp[i][*], we only use values from dp[i - 1][*].  
 So we don’t need the full 2D table.
 
-1️⃣ Key Observation (This unlocks optimization)
+#### 1️⃣ Key Observation (This unlocks optimization)
 
 From tabulation:
 dp[i][s] = dp[i - 1][s] 
@@ -330,7 +330,7 @@ So instead of O(n × target) space, we can use O(target).
 
 ---
 
-## 2️⃣ What does 1D `dp[s]` mean?
+#### 2️⃣ What does 1D `dp[s]` mean?
 
 `dp[s] =` can we form sum `s` using elements processed so far?
 
@@ -338,7 +338,7 @@ As we iterate elements one by one, `dp` keeps updating to reflect sums achievabl
 
 ---
 
-## 3️⃣ The Optimized Code
+#### 3️⃣ The Optimized Code
 ```java
 boolean[] dp = new boolean[target + 1];
 dp[0] = true;   // base case
@@ -354,20 +354,20 @@ for (int num : arr) {
 
 ---
 
-## 4️⃣ Base Case
+#### 4️⃣ Base Case
 `dp[0] = true;`  
 Why? Sum 0 is always possible (empty subset). This replaces `dp[0][0] = true` from 2D DP.
 
 ---
 
-## 5️⃣ Outer Loop — Processing Elements
+#### 5️⃣ Outer Loop — Processing Elements
 `for (int num : arr)`
 
 Meaning: “I am now deciding whether to take or not take this number.” Each number is processed once → 0/1 behavior guaranteed.
 
 ---
 
-## 6️⃣ Inner Loop — WHY BACKWARD? ⚠️⚠️⚠️
+#### 6️⃣ Inner Loop — WHY BACKWARD? ⚠️⚠️⚠️
 `for (int s = target; s >= num; s--)`
 
 This is the most important concept.
@@ -384,7 +384,7 @@ for (int s = num; s <= target; s++)
 
 ---
 
-## 7️⃣ Example Walkthrough (VERY IMPORTANT)
+#### 7️⃣ Example Walkthrough (VERY IMPORTANT)
 
 Input:
 ```
@@ -418,13 +418,13 @@ Result:
 
 ---
 
-## 8️⃣ What if we looped FORWARD (WRONG)?
+#### 8️⃣ What if we looped FORWARD (WRONG)?
 
 Forward loop would allow reusing `3` multiple times → `{3,3}` which violates the 0/1 constraint.
 
 ---
 
-## 9️⃣ When to Use Backward vs Forward
+#### 9️⃣ When to Use Backward vs Forward
 
 - 0/1 Knapsack / Subset Sum: 🔙 Backward
 - Coin Change (unbounded) / Unlimited usage: 🔜 Forward
@@ -434,13 +434,11 @@ Backward loop = use element once. Forward loop = reuse element multiple times.
 
 ---
 
-## 🧠 Final Mental Model
+#### 🧠 Final Mental Model
 
 2D DP → clear logic.  
 1D DP → same logic, reused space.  
 Backward loop → preserves correctness.
-```
-
 ---
 
 ## 9️⃣ DP Thinking Template (Memorize This)
