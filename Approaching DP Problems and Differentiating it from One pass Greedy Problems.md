@@ -393,7 +393,7 @@ if (s >= arr[i - 1]) {
 }
 ```
 It's just encoding "take OR don't take" in a single statement. No mystery.
-```
+
 ---
 
 
