@@ -302,6 +302,115 @@ For each element, choose take or don't take and build answers from smaller subpr
 
 #### 🔥 Interview Gold Line
 “For each element, I decide take or don’t take, and build answers from smaller subproblems — dp[i][s] means whether sum s is achievable using the first i elements.”
+
+
+#### Decoding: `dp[i][s] |= dp[i - 1][s - arr[i - 1]]`
+
+Let's break this line down piece by piece.
+
+---
+
+##### 1️⃣ What does `|=` mean?
+```java
+a |= b
+```
+Is shorthand for:
+```java
+a = a || b
+```
+So the line is equivalent to:
+```java
+dp[i][s] = dp[i][s] || dp[i - 1][s - arr[i - 1]];
+```
+
+---
+
+##### 2️⃣ What does `dp[i][s]` mean again?
+`dp[i][s] = true` if we can form sum `s` using the first `i` elements.
+
+---
+
+##### 3️⃣ What is `arr[i - 1]`?
+`i` is 1-based in the DP table (counts elements used), array indices are 0-based.  
+So:
+- `i = 1 → arr[0]`
+- `i = 2 → arr[1]`
+- etc.
+
+---
+
+##### 4️⃣ Intuitive English meaning of the line
+“If I take the i-th element, can I form sum `s`?”
+
+To take element `arr[i - 1]`, the remaining sum must be:
+```
+s - arr[i - 1]
+```
+and that remaining sum must be possible using previous elements:
+```java
+dp[i - 1][s - arr[i - 1]]
+```
+
+So the line asks: is sum `s` achievable either already (`dp[i][s]`) or by taking this element (`dp[i - 1][s - arr[i - 1]]`)?
+
+---
+
+##### 5️⃣ Why OR (`||`)?
+There are two ways to make sum `s`:
+- Don’t take current element → `dp[i - 1][s]`
+- Take current element → `dp[i - 1][s - arr[i - 1]]`
+
+If either is true, `dp[i][s]` should be true. The `||` combines these possibilities.
+
+---
+
+##### 6️⃣ Step-by-step example
+Input:
+```java
+arr = {2, 3}
+target = 5
+```
+We want `dp[2][5]` — can we form 5 using {2,3}?
+
+- Don’t take 3: `dp[1][5] = false` (using {2} can't form 5)
+- Take 3: remaining = `5 - 3 = 2`, check `dp[1][2] = true` (using {2} can form 2)
+
+Combine:
+```java
+dp[2][5] = false || true = true
+// written as:
+dp[2][5] |= dp[1][2];
+```
+
+---
+
+##### 7️⃣ Visual representation
+```
+sum = 5, elements = {2,3}
+
+            5
+           / \
+      don't   take
+        |       |
+       5       2   ← remaining sum
+       ❌      ✅
+```
+
+---
+
+##### 8️⃣ One-line intuition (MEMORIZE THIS)
+“If the remaining sum can be formed without the current element, then the full sum can be formed by taking it.”
+
+---
+
+##### 9️⃣ Final simplified (non-magic) version
+```java
+if (s >= arr[i - 1]) {
+    dp[i][s] = dp[i][s] || dp[i - 1][s - arr[i - 1]];
+}
+```
+It's just encoding "take OR don't take" in a single statement. No mystery.
+```
 ---
 
 
