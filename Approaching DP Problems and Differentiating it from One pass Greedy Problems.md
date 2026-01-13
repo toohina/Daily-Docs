@@ -136,9 +136,163 @@ for (int i = 1; i <= n; i++) {
         }
     }
 }
+# Subset Sum (0/1) — Bottom-Up DP
+
+## 🧠 Goal of the Problem
+Given:
+```java
+int[] arr = {2, 3, 7};
+int target = 5;
+```
+Question: Can we form sum = 5 using some of the elements?  
+Each element can be used at most once (take / don’t take).
+
+---
+
+## 1️⃣ What does dp[i][s] mean?
+This is the MOST IMPORTANT PART.
+
+dp[i][s] = true if we can form sum = s using the first i elements
+
+Clarify “first i elements”:
+- i = 0 → no elements
+- i = 1 → {2}
+- i = 2 → {2, 3}
+- i = 3 → {2, 3, 7}
+
+Example:
+- dp[2][5] → Can we make sum 5 using {2, 3}?
+
+---
+
+## 2️⃣ DP Table Size
+```java
+boolean[][] dp = new boolean[n + 1][target + 1];
+```
+Why n + 1? We need row 0 → “using 0 elements”.  
+Columns run from 0..target (sums).
+
+---
+
+## 3️⃣ Base Case Initialization
+```java
+dp[0][0] = true;
+```
+Why? Using 0 elements we can make sum 0 (empty subset).  
+All other entries in row 0 are false:
+- dp[0][1] = false, dp[0][2] = false, ...
+
+Also, for every i: dp[i][0] = true (we can always form sum 0 by choosing nothing).
+
+---
+
+## 4️⃣ Filling the Table (Core Logic)
+We iterate over items (i) and all possible sums (s):
+```java
+for (int i = 1; i <= n; i++) {
+    for (int s = 0; s <= target; s++) {
+        // fill dp[i][s]
+    }
+}
+```
+Meaning: For each prefix of the array and for each target sum, decide if sum s is formable.
+
+---
+
+## 5️⃣ DON’T TAKE Case
+```java
+dp[i][s] = dp[i - 1][s];
+```
+Meaning: If we don't take the current element, can we already make sum s using previous elements? Copy from the previous row.
+
+Example: dp[2][5] = dp[1][5]
+
+---
+
+## 6️⃣ TAKE Case
+```java
+if (s >= arr[i - 1]) {
+    dp[i][s] |= dp[i - 1][s - arr[i - 1]];
+}
+```
+Why arr[i - 1]? Because array indices are 0-based while i is 1-based in the DP table:
+- i = 1 → element index 0
+- i = 2 → element index 1
+
+Meaning: If we take current element (value v = arr[i-1]), we need the remaining sum (s - v) to be formable by previous elements. So check dp[i-1][s-v].
+
+Example: arr[i - 1] = 3, s = 5 → remaining = 2 → dp[2][5] |= dp[1][2]
+
+---
+
+## 7️⃣ Why OR (|=)?
+```java
+dp[i][s] = dontTake OR take
+```
+If either not taking or taking yields true, dp[i][s] is true.
+
+---
+
+## 8️⃣ Full Code (With Meaning)
+```java
+boolean[][] dp = new boolean[n + 1][target + 1];
+
+// base cases
+dp[0][0] = true;
+for (int i = 1; i <= n; i++) dp[i][0] = true; // optional but clear
+
+for (int i = 1; i <= n; i++) {
+    for (int s = 0; s <= target; s++) {
+
+        // don't take
+        dp[i][s] = dp[i - 1][s];
+
+        // take (if current element can fit)
+        if (s >= arr[i - 1]) {
+            dp[i][s] |= dp[i - 1][s - arr[i - 1]];
+        }
+    }
+}
+
+// Answer: dp[n][target]
+```
+
+- dp[n][target] tells us if we can form `target` using all n elements.
+
+---
+
+## 9️⃣ Visual Table Example
+For arr = {2, 3}, target = 5:
+
+i \ s | 0 | 1 | 2 | 3 | 4 | 5
+---|---:|---:|---:|---:|---:|---:
+0 | T | F | F | F | F | F
+1 (2) | T | F | T | F | F | F
+2 (3) | T | F | T | T | F | T
+
+- dp[2][5] = true → subset {2, 3}
+
+---
+
+## 🔑 Mental Model (Memorize This)
+“Each DP row answers: what sums can I form up to this element?”
+
+For each element, choose take or don't take and build answers from smaller subproblems.
+
+---
+
+## Complexity
+- Time: O(n * target) — we evaluate every (i, s).
+- Space: O(n * target). Can be optimized to O(target) using a single boolean[] and iterating s from target down to arr[i-1].
+
+---
+
+## 🔥 Interview Gold Line
+“For each element, I decide take or don’t take, and build answers from smaller subproblems — dp[i][s] means whether sum s is achievable using the first i elements.”
 ```
 
 ---
+
 
 ## 8️⃣ Step 8: Optimize Space (if possible)
 
@@ -152,6 +306,139 @@ for (int num : arr) {
         dp[s] = dp[s] || dp[s - num];
     }
 }
+
+# Subset Sum (0/1) — 1D Optimization (Space Optimized)
+
+## 🧠 What we are optimizing
+
+Earlier we had:
+```java
+boolean[][] dp = new boolean[n + 1][target + 1];
+```
+
+But notice something important: to compute dp[i][*], we only use values from dp[i - 1][*].  
+So we don’t need the full 2D table.
+
+1️⃣ Key Observation (This unlocks optimization)
+
+From tabulation:
+dp[i][s] = dp[i - 1][s] 
+        OR dp[i - 1][s - arr[i - 1]]
+
+👉 Only the previous row is needed — we can reuse the same array.  
+So instead of O(n × target) space, we can use O(target).
+
+---
+
+## 2️⃣ What does 1D `dp[s]` mean?
+
+`dp[s] =` can we form sum `s` using elements processed so far?
+
+As we iterate elements one by one, `dp` keeps updating to reflect sums achievable with the processed prefix.
+
+---
+
+## 3️⃣ The Optimized Code
+```java
+boolean[] dp = new boolean[target + 1];
+dp[0] = true;   // base case
+
+for (int num : arr) {
+    for (int s = target; s >= num; s--) {
+        dp[s] = dp[s] || dp[s - num];
+    }
+}
+
+// Answer: dp[target]
+```
+
+---
+
+## 4️⃣ Base Case
+`dp[0] = true;`  
+Why? Sum 0 is always possible (empty subset). This replaces `dp[0][0] = true` from 2D DP.
+
+---
+
+## 5️⃣ Outer Loop — Processing Elements
+`for (int num : arr)`
+
+Meaning: “I am now deciding whether to take or not take this number.” Each number is processed once → 0/1 behavior guaranteed.
+
+---
+
+## 6️⃣ Inner Loop — WHY BACKWARD? ⚠️⚠️⚠️
+`for (int s = target; s >= num; s--)`
+
+This is the most important concept.
+
+❓ Why not forward?
+
+If we go forward:
+```java
+for (int s = num; s <= target; s++)
+```
+❌ That would allow reusing the same element multiple times — it becomes UNBOUNDED KNAPSACK.
+
+🔥 Backward loop prevents reuse: when iterating right → left, `dp[s - num]` still reflects the state before processing the current `num`, so `num` is used only once. ✔ Correct for 0/1 knapsack / subset sum.
+
+---
+
+## 7️⃣ Example Walkthrough (VERY IMPORTANT)
+
+Input:
+```
+arr = {2, 3}
+target = 5
+```
+
+Initial:
+```
+dp = [true, false, false, false, false, false]
+```
+
+Processing `num = 2` (s = 5 → 2):
+- `dp[2] = dp[2] || dp[0]` → true
+
+Result:
+```
+[true, false, true, false, false, false]
+```
+
+Processing `num = 3` (s = 5 → 3):
+- `dp[5] = dp[5] || dp[2]` → true
+- `dp[3] = dp[3] || dp[0]` → true
+
+Result:
+```
+[true, false, true, true, false, true]
+```
+
+✔ Sum 5 possible → {2,3}
+
+---
+
+## 8️⃣ What if we looped FORWARD (WRONG)?
+
+Forward loop would allow reusing `3` multiple times → `{3,3}` which violates the 0/1 constraint.
+
+---
+
+## 9️⃣ When to Use Backward vs Forward
+
+- 0/1 Knapsack / Subset Sum: 🔙 Backward
+- Coin Change (unbounded) / Unlimited usage: 🔜 Forward
+
+🔑 One-Line Rule (MEMORIZE THIS)  
+Backward loop = use element once. Forward loop = reuse element multiple times.
+
+---
+
+## 🧠 Final Mental Model
+
+2D DP → clear logic.  
+1D DP → same logic, reused space.  
+Backward loop → preserves correctness.
 ```
 
 ---
