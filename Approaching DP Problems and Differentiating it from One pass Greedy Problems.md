@@ -303,12 +303,11 @@ For each element, choose take or don't take and build answers from smaller subpr
 #### 🔥 Interview Gold Line
 “For each element, I decide take or don’t take, and build answers from smaller subproblems — dp[i][s] means whether sum s is achievable using the first i elements.”
 
+---
 
 #### Decoding: `dp[i][s] |= dp[i - 1][s - arr[i - 1]]`
 
 Let's break this line down piece by piece.
-
----
 
 ##### 1️⃣ What does `|=` mean?
 ```java
@@ -323,12 +322,8 @@ So the line is equivalent to:
 dp[i][s] = dp[i][s] || dp[i - 1][s - arr[i - 1]];
 ```
 
----
-
 ##### 2️⃣ What does `dp[i][s]` mean again?
 `dp[i][s] = true` if we can form sum `s` using the first `i` elements.
-
----
 
 ##### 3️⃣ What is `arr[i - 1]`?
 `i` is 1-based in the DP table (counts elements used), array indices are 0-based.  
@@ -336,8 +331,6 @@ So:
 - `i = 1 → arr[0]`
 - `i = 2 → arr[1]`
 - etc.
-
----
 
 ##### 4️⃣ Intuitive English meaning of the line
 “If I take the i-th element, can I form sum `s`?”
@@ -353,16 +346,12 @@ dp[i - 1][s - arr[i - 1]]
 
 So the line asks: is sum `s` achievable either already (`dp[i][s]`) or by taking this element (`dp[i - 1][s - arr[i - 1]]`)?
 
----
-
 ##### 5️⃣ Why OR (`||`)?
 There are two ways to make sum `s`:
 - Don’t take current element → `dp[i - 1][s]`
 - Take current element → `dp[i - 1][s - arr[i - 1]]`
 
 If either is true, `dp[i][s]` should be true. The `||` combines these possibilities.
-
----
 
 ##### 6️⃣ Step-by-step example
 Input:
@@ -382,8 +371,6 @@ dp[2][5] = false || true = true
 dp[2][5] |= dp[1][2];
 ```
 
----
-
 ##### 7️⃣ Visual representation
 ```
 sum = 5, elements = {2,3}
@@ -396,12 +383,8 @@ sum = 5, elements = {2,3}
        ❌      ✅
 ```
 
----
-
 ##### 8️⃣ One-line intuition (MEMORIZE THIS)
 “If the remaining sum can be formed without the current element, then the full sum can be formed by taking it.”
-
----
 
 ##### 9️⃣ Final simplified (non-magic) version
 ```java
