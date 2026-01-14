@@ -1,6 +1,6 @@
 # Minimum Jumps to Reach Home (DP)
 
-## IMP NOTE: If the position exceeds x+b then no point going further. Why?
+## If the position exceeds x+b then no point going further. Why?
 Since we cannot go backwards consecutively, if we go past x+b, there is no way we can reach back to x.
 
 ### First Approach (Plain Recursion):
@@ -26,4 +26,8 @@ class Solution {
         return Math.min(forward,backward);
     }
 }
+```
+### Correctinig First Approach:
+```java
+
 ```
