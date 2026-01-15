@@ -3,10 +3,10 @@
 ## 1️⃣ Take / Don’t Take DP
 👉 Choice at every index: pick or skip
 ### Easy
-* Subset Sum (GFG)
+* Subset Sum (GFG) ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 * Partition Equal Subset Sum (LC 416)
 * Can Partition (LC 416)
-* Target Sum (LC 494)
+* Target Sum (LC 494) 
 ### Medium
 * 0/1 Knapsack (GFG)
 * Coin Change I (LC 322)
@@ -20,13 +20,13 @@
 ## 2️⃣ Linear DP
 👉 State depends on previous 1–2 indices
 ### Easy
-* Fibonacci Number (LC 509)
-* Climbing Stairs (LC 70)
+* Fibonacci Number (LC 509) 
+* Climbing Stairs (LC 70) ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 * Min Cost Climbing Stairs (LC 746)
 ### Medium
 * House Robber (LC 198)
 * House Robber II (LC 213)
-* Decode Ways (LC 91)
+* Decode Ways (LC 91) ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 ### Hard
 * Paint House (LC 256)
 * Paint Fence (LC 276)
@@ -53,7 +53,7 @@
 * Partition Array for Maximum Sum (LC 1043)
 ### Medium
 * Matrix Chain Multiplication (GFG)
-* Burst Balloons (LC 312)
+* Burst Balloons (LC 312) ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 * Minimum Cost to Cut a Stick (LC 1547)
 ### Hard
 * Palindrome Partitioning II (LC 132)
