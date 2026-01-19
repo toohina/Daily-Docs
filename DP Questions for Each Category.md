@@ -40,7 +40,7 @@
 * Minimum Path Sum (LC 64)
 ### Medium
 * Triangle (LC 120)
-* Dungeon Game (LC 174)
+* Dungeon Game (LC 174)![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 * Cherry Pickup I (LC 741)
 ### Hard
 * Cherry Pickup II (LC 1463)
