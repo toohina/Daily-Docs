@@ -1,6 +1,7 @@
 Question Link: https://leetcode.com/problems/cherry-pickup/
 
 Why Greedy does not Work?
+
 The first approach that comes to our mind is ofcourse being greedy and choosing max value of cherries picked at every step and using 2 helper functions for the same: One from (0,0) to (n-1,n-1)
 and another for (n-1,n-1) to (0,0). Then adding up the max values from both the functions.
 This DOES NOT Work because, we may go through the same cell again and again while selecting the max cherry path but we need to account for the cherry that is picked up as well so that we cannot 
