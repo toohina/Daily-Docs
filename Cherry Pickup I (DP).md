@@ -66,11 +66,9 @@ class Solution {
             )
         );
 
-        if (maxFuture == Integer.MIN_VALUE)
-            return dp[c1][r2][c2] = Integer.MIN_VALUE;
-
         return dp[c1][r2][c2] = cherries + maxFuture;
     }
 }
+
 
 ```
