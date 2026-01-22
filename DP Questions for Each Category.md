@@ -41,7 +41,7 @@
 ### Medium
 * Triangle (LC 120)
 * Dungeon Game (LC 174)![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
-* Cherry Pickup I (LC 741)
+* Cherry Pickup I (LC 741) ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 ### Hard
 * Cherry Pickup II (LC 1463)
 * Maximum Number of Moves in a Grid (LC 2684)
