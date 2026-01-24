@@ -35,7 +35,7 @@
 ## 3️⃣ 2D Grid DP
 👉 Move in grid directions
 ### Easy
-* Unique Paths (LC 62)
+* Unique Paths (LC 62)![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png)
 * Unique Paths II (LC 63)
 * Minimum Path Sum (LC 64)
 ### Medium
