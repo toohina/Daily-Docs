@@ -1,0 +1,1 @@
+Nondescript-Lacking interesting features. Eg: He wore a nondescript suit.
