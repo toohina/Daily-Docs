@@ -13,4 +13,9 @@ Harbor - keep (something negative). Eg:
 "she started to harbour doubts about the wisdom of their journey"
 "he was suspected of harbouring an escaped prisoner"
 
+Angst - Anxiety/dread
+my hair causes me angst. 
+existential angst of middle classes
+
+
 
